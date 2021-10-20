@@ -13,7 +13,7 @@ Example start:
       -v roon-data:/data \
       -v roon-music:/music \
       -v roon-backups:/backup \
-      steefdebruijn/docker-roonserver:latest
+      dbailey/docker-roonserver:latest
   
   * You should set `TZ` to your timezone.
   * You can change the volume mappings to local file system paths if you like.
@@ -34,7 +34,7 @@ Example `systemd` service:
     TimeoutStopSec=180
     ExecStartPre=-/usr/bin/docker kill %n
     ExecStartPre=-/usr/bin/docker rm -f %n
-    ExecStartPre=/usr/bin/docker pull steefdebruijn/docker-roonserver
+    ExecStartPre=/usr/bin/docker pull dbailey/docker-roonserver
     ExecStart=/usr/bin/docker \
       run --name %n \
       --net=host \
@@ -54,12 +54,50 @@ Example `systemd` service:
 
   Don't forget to backup the `roon-backups` *for real* (offsite preferably).
 
-  Have fun!
-  
-  Steef
+Example `docker-compose` service:
+
+    version: '3.5'
+    services:
+      roon:
+        container_name: roon
+        image: dbailey/docker-roonserver
+        restart: unless-stopped
+        environment:
+          - TZ=America/Los_Angeles
+        networks:
+          docker-vlan2:
+              ipv4_address: 10.0.0.9
+        hostname: roon
+        devices:
+          - /dev/snd
+        volumes:
+          - roon_app:/app
+          - roon_data:/data
+          - /media/music:/music:ro
+          - /media/roon/backups:/backup
+        labels:
+          - com.github.willfarrell.autoheal=true
+          - com.centurylinklabs.watchtower.enable=true
+          - SERVICE_IGNORE=true
+        dns:
+          - 1.1.1.1
+          - 8.8.8.8
+    volumes:
+      roon_data:
+          external:
+              name: roon_data
+      roon_app:
+          external:
+              name: roon_app
+
+
+  Don't forget to run `docker volume create roon_data && docker volume create roon_app` before starting the compose. 
+
 
 ## Version history
 
+  * 2021-10-19: rebase image to `ubuntu:latest`, install `ksh` for forkers personal preference, and install 
+    `libicu66` to support the upcoming Roon Mono to .NET change.
   * 2020-05-24: update base image to `debian-10.9-slim` and check for shared `/app` and `/data` folders.
   * 2019-03-18: Fix example start (thanx @heapxor); add `systemd` example.
   * 2019-01-23: updated base image to `debian-9.6`

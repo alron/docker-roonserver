@@ -1,5 +1,5 @@
 # docker-roonserver
-RoonServer downloading Roon on first run
+`docker-roonserver` for installing and running RoonServer in a docker environment.
 
 This little project configures a docker image for running RoonServer.
 It downloads RoonServer if not found on an external volume.
@@ -8,11 +8,11 @@ Example start:
 
     docker run -d \
       --net=host \
-      -e TZ="Europe/Amsterdam" \
-      -v roon-app:/app \
-      -v roon-data:/data \
-      -v roon-music:/music \
-      -v roon-backups:/backup \
+      -e TZ="America/Los_Angeles" \
+      -v roon_app:/app \
+      -v roon_data:/data \
+      -v /media/music:/music:ro \
+      -v /media/backups:/backup \
       alron/docker-roonserver:latest
   
   * You should set `TZ` to your timezone.
@@ -20,6 +20,9 @@ Example start:
   * You *must* use different folders for `/app` and `/data`.
     The app will not start if they both point to the same folder or volume on your host.
   * You should set up your library root to `/music` and configure backups to `/backup` on first run.
+  * Change `/media/music` and `/media/backups` to your proper media and backup location.
+  * You should manually create the volumes used by the docker image to protect them from being automatically 
+    removed during a clean. Ex: `docker volume create roon_data && docker volume create roon_app`
 
 
 Example `systemd` service:
@@ -38,12 +41,12 @@ Example `systemd` service:
     ExecStart=/usr/bin/docker \
       run --name %n \
       --net=host \
-      -e TZ="Europe/Amsterdam" \
-      -v roon-app:/app \
-      -v roon-data:/data \
-      -v roon-music:/music \
-      -v roon-backups:/backup \
-      steefdebruijn/docker-roonserver
+      -e TZ="America/Los_Angeles" \
+      -v roon_app:/app \
+      -v roon_data:/data \
+      -v /media/music:/music:ro \
+      -v /media/backups:/backup \
+      alron/docker-roonserver
     ExecStop=/usr/bin/docker stop %n
     Restart=always
     RestartSec=10s
@@ -54,7 +57,7 @@ Example `systemd` service:
 
   Don't forget to backup the `roon-backups` *for real* (offsite preferably).
 
-Example `docker-compose` service:
+Example `docker-compose` service running in a vlan environment:
 
     version: '3.5'
     services:
@@ -92,8 +95,9 @@ Example `docker-compose` service:
 
 ## Version history
 
-  * 2021-10-19: rebase image to `ubuntu:latest`, install `ksh` for forkers personal preference, and install 
-    `libicu66` to support the upcoming Roon Mono to .NET change.
+  * 2021-10-19: fork from `steefdebruijn/docker-roonserver`, rebase image to `ubuntu:latest`, install `ksh` for forkers 
+    personal preference, replace `bash` run script with `ksh` for forkers personal preference, update examples, and 
+    install `libicu66` to support the upcoming Roon Mono to .NET change.
   * 2020-05-24: update base image to `debian-10.9-slim` and check for shared `/app` and `/data` folders.
   * 2019-03-18: Fix example start (thanx @heapxor); add `systemd` example.
   * 2019-01-23: updated base image to `debian-9.6`

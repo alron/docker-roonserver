@@ -3,12 +3,12 @@
 for dir in /app /data; do
   # Check folder existence
   if [[ ! -d "${dir}" ]]; then
-    print -u2 -f "Error: folder %s is not present./n" "${dir}"
+    print -u2 -f "Error: folder %s is not present.\n" "${dir}"
     exit 1
   fi
   
   if [[ ! -w "${dir}" ]]; then
-    print -u2 -f "Error: folder %s is not able to be written to./n" "${dir}"
+    print -u2 -f "Error: folder %s is not able to be written to.\n" "${dir}"
     exit 1
   fi
 done
@@ -34,9 +34,13 @@ if [[  ! -d RoonServer ]]; then
     exit 1
   fi
 
-  curl ${ROON_SERVER_URL} -O
-  tar xjf ${ROON_SERVER_PKG}
-  rm -f ${ROON_SERVER_PKG}
+  curl ${ROON_SERVER_URL} -O && \
+  tar xjf "${ROON_SERVER_PKG}" && \
+  rm -f "${ROON_SERVER_PKG}"
+  if (( ${?} != 0 )); then
+    print -u2 -f "Error: unable to download and extract RoonServer package %s from url %s.\n" "${ROON_SERVER_PKG}" "${ROON_SERVER_URL}"
+    exit 1
+  fi
 fi
 
 # Run the app

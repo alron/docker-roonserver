@@ -75,10 +75,6 @@ Example `docker-compose` service:
           - roon_data:/data
           - /media/music:/music:ro
           - /media/roon/backups:/backup
-        labels:
-          - com.github.willfarrell.autoheal=true
-          - com.centurylinklabs.watchtower.enable=true
-          - SERVICE_IGNORE=true
         dns:
           - 1.1.1.1
           - 8.8.8.8

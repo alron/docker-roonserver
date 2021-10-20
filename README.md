@@ -14,13 +14,10 @@ Example start:
       -v /media/music:/music:ro \
       -v /media/backups:/backup \
       alron/docker-roonserver:latest
-  
+
   * You should set `TZ` to your timezone.
-  * You can change the volume mappings to local file system paths if you like.
-  * You *must* use different folders for `/app` and `/data`.
-    The app will not start if they both point to the same folder or volume on your host.
-  * You should set up your library root to `/music` and configure backups to `/backup` on first run.
-  * Change `/media/music` and `/media/backups` to your proper media and backup location.
+  * Change `/media/music` and `/media/backups` to your proper media and backup location on the host server.
+  * You should set your library root to `/music` and configure backups to `/backup` on first run.
   * You should manually create the volumes used by the docker image to protect them from being automatically 
     removed during a clean. Ex: `docker volume create roon_data && docker volume create roon_app`
 
@@ -55,8 +52,6 @@ Example `systemd` service:
     WantedBy=multi-user.target
 
 
-  Don't forget to backup the `roon-backups` *for real* (offsite preferably).
-
 Example `docker-compose` service running in a vlan environment:
 
     version: '3.5'
@@ -90,7 +85,8 @@ Example `docker-compose` service running in a vlan environment:
               name: roon_app
 
 
-  Don't forget to run `docker volume create roon_data && docker volume create roon_app` before starting the compose. 
+  Don't forget to run `docker volume create roon_data && docker volume create roon_app` before starting the compose if
+  basing off of this example.
 
 
 ## Version history

@@ -13,7 +13,7 @@ Example start:
       -v roon-data:/data \
       -v roon-music:/music \
       -v roon-backups:/backup \
-      dbailey/docker-roonserver:latest
+      alron/docker-roonserver:latest
   
   * You should set `TZ` to your timezone.
   * You can change the volume mappings to local file system paths if you like.
@@ -34,7 +34,7 @@ Example `systemd` service:
     TimeoutStopSec=180
     ExecStartPre=-/usr/bin/docker kill %n
     ExecStartPre=-/usr/bin/docker rm -f %n
-    ExecStartPre=/usr/bin/docker pull dbailey/docker-roonserver
+    ExecStartPre=/usr/bin/docker pull alron/docker-roonserver
     ExecStart=/usr/bin/docker \
       run --name %n \
       --net=host \
@@ -60,7 +60,7 @@ Example `docker-compose` service:
     services:
       roon:
         container_name: roon
-        image: dbailey/docker-roonserver
+        image: alron/docker-roonserver
         restart: unless-stopped
         environment:
           - TZ=America/Los_Angeles

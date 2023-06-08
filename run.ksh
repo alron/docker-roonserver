@@ -34,7 +34,7 @@ if [[  ! -d RoonServer ]]; then
     exit 1
   fi
 
-  curl ${ROON_SERVER_URL} -O && \
+  curl -L ${ROON_SERVER_URL} -O && \
   tar xjf "${ROON_SERVER_PKG}" && \
   rm -f "${ROON_SERVER_PKG}"
   if (( ${?} != 0 )); then

@@ -1,9 +1,9 @@
-FROM ubuntu:latest
+FROM ubuntu:jammy
 MAINTAINER dbailey@bloodmagic.com
 
 RUN apt-get update \
         && apt-get -y upgrade \
-        && apt-get -y install bash curl bzip2 ffmpeg cifs-utils alsa-utils libicu66 ksh
+        && apt-get -y install bash curl bzip2 ffmpeg cifs-utils alsa-utils libicu70 ksh
 
 ENV ROON_SERVER_PKG RoonServer_linuxx64.tar.bz2
 ENV ROON_SERVER_URL http://download.roonlabs.com/builds/${ROON_SERVER_PKG}

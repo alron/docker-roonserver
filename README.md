@@ -90,7 +90,8 @@ Example `docker-compose` service running in a vlan environment:
 
 
 ## Version history
-
+  * 2023-07-31: rebased image to `ubuntu:jammy` and added dumb-init to handle signal routing, updated to libicu70, and 
+    migrated to using TLS downloads for container.
   * 2021-10-19: fork from `steefdebruijn/docker-roonserver`, rebase image to `ubuntu:latest`, install `ksh` for forkers 
     personal preference, replace `bash` run script with `ksh` for forkers personal preference, update examples, and 
     install `libicu66` to support the upcoming Roon Mono to .NET change.

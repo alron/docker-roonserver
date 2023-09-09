@@ -52,7 +52,7 @@ Example `systemd` service:
     WantedBy=multi-user.target
 
 
-Example `docker-compose` service running in a vlan environment:
+Example `docker compose` service running in a vlan environment:
 
     version: '3.5'
     services:
@@ -78,11 +78,11 @@ Example `docker-compose` service running in a vlan environment:
           - 8.8.8.8
     volumes:
       roon_data:
-          external:
-              name: roon_data
+          external: true
+          name: roon_data
       roon_app:
-          external:
-              name: roon_app
+          external: true
+          name: roon_app
 
 
   Don't forget to run `docker volume create roon_data && docker volume create roon_app` before starting the compose if
@@ -90,6 +90,8 @@ Example `docker-compose` service running in a vlan environment:
 
 
 ## Version history
+  * 2023-09-09: Updated example `docker compose` configuration to be compliant with external volume changes in the
+    official `docker compose` client. Removed ubuntu package caches to reduce image size.
   * 2023-07-31: rebased image to `ubuntu:jammy` and added dumb-init to handle signal routing, updated to libicu70, and 
     migrated to using TLS downloads for container.
   * 2021-10-19: fork from `steefdebruijn/docker-roonserver`, rebase image to `ubuntu:latest`, install `ksh` for forkers 

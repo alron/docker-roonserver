@@ -90,6 +90,7 @@ Example `docker compose` service running in a vlan environment:
 
 
 ## Version history
+  * 2024-04-27: rebased image to `ubuntu:noble` and updated libicu70 to libicu74.
   * 2023-09-09: Updated example `docker compose` configuration to be compliant with external volume changes in the
     official `docker compose` client. Removed ubuntu package caches to reduce image size.
   * 2023-07-31: rebased image to `ubuntu:jammy` and added dumb-init to handle signal routing, updated to libicu70, and 
